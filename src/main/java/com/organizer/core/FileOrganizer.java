@@ -55,9 +55,9 @@ public class FileOrganizer {
         return new OrganizePreview(root, plans);
     }
 
-    public int execute(OrganizePreview preview) throws IOException {
+    public int execute(List<OrganizePlan> plans) throws IOException {
         int moved = 0;
-        for (OrganizePlan plan : preview.getPlans()) {
+        for (OrganizePlan plan : plans) {
             Path target = plan.getTarget();
             Files.createDirectories(target.getParent());
             Path resolved = resolveConflict(target);
@@ -65,6 +65,10 @@ public class FileOrganizer {
             moved++;
         }
         return moved;
+    }
+
+    public int execute(OrganizePreview preview) throws IOException {
+        return execute(preview.getPlans());
     }
 
     private void handleFile(Path file, List<OrganizePlan> plans) {
